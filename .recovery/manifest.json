@@ -1,0 +1,18 @@
+{
+  "format": "tar.xz",
+  "sha256": "40a08ee8ee3a37f4add95cceaacfd2ac2ec9ae4f3904db6d86610197ee3a8247",
+  "parts": [
+    {"path":".recovery/part-00.bin","sha256":"d2a94a7d7d0f835b6ec24a5b67e6b45e5f0b9cd83ec1190817a9f4acd896fac8"},
+    {"path":".recovery/part-01.bin","sha256":"ed6cbebf9642f9346356b46f42138ba8782b8119cbf2a3238166d26ce63be37e"},
+    {"path":".recovery/part-02.bin","sha256":"3dde0d3cd5c158ac77e7a1d5c8a98a0dcdf335c864d14697036484ebaf22e782"},
+    {"path":".recovery/part-03.bin","sha256":"31d139aeb8e469862b664672fcd0669888197213b244a28c8aa15132d060f8b6"},
+    {"path":".recovery/part-04.bin","sha256":"9d66893153a7d67931667e94291fd8914be207573109d9b51ed44fb2d9bf62e2"},
+    {"path":".recovery/part-05.bin","sha256":"d09bcc0423b04499f89409181f3f243fea65603bf4633f203cdeb78371c126f1"},
+    {"path":".recovery/part-06.bin","sha256":"75497777d285d9872a9e39e1dc7879f06213ccdc1e490f2b2f3c5663ac3e51da"},
+    {"path":".recovery/part-07.bin","sha256":"574d323487c5930383ff76431f0a06bc011a28dfbd498d871a2a921edde68a3c"},
+    {"path":".recovery/part-08.bin","sha256":"8d87940b300af88fd007158470c6a58769fece6cd7a0b61da288308698d13853"},
+    {"path":".recovery/part-09.bin","sha256":"94cff67ddfa381f44fb9837b184998b02093fa6794e1106472999e14bcbe4cd5"},
+    {"path":".recovery/part-10.bin","sha256":"ded9c800c38de8342558b129e3c69c53d34c497a5bb42ecc2239cc634b58e393"},
+    {"path":".recovery/part-11.bin","sha256":"bf9b45b58e539836e7ebb827a7052d6bb6f4b880f0bc6df3dbc63c842d1189e3"}
+  ]
+}
