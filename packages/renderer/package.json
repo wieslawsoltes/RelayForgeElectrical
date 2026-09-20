@@ -1,0 +1,19 @@
+{
+  "name": "@relayforge/renderer",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "*.js",
+    "*.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@relayforge/core": "0.2.0"
+  },
+  "license": "MIT"
+}
