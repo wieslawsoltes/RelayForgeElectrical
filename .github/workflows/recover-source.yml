@@ -1,7 +1,7 @@
 name: Recover source archive
 on:
   push:
-    paths: ['.recovery/manifest.json']
+    paths: ['.recovery/manifest.json', '.github/workflows/recover-source.yml']
   workflow_dispatch:
 permissions:
   contents: write
@@ -9,6 +9,7 @@ jobs:
   recover:
     if: startsWith(github.ref_name, 'codex/relayforge-pages-')
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,9 +42,12 @@ jobs:
                   target.parent.mkdir(parents=True, exist_ok=True)
                   target.write_bytes(archive.extractfile(member).read())
           print('Recovered source archive:', manifest['sha256'])
+      - name: Build generated server before verifying module imports
+        run: |
+          mkdir -p worker
+          npm run build
       - run: npm test
       - run: npm run verify:source
-      - run: npm run build
       - run: npm run validate
       - run: npm run build:pages
       - run: npm run pack:libs
@@ -61,3 +65,29 @@ jobs:
             dist/
             dist-pages/
             artifacts/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recovered-source
+          include-hidden-files: true
+          path: |
+            app/
+            packages/
+            server/
+            scripts/
+            tests/
+            bridge/
+            docs/
+            examples/
+            drizzle/
+            db/
+            .openai/
+            .github/
+            .gitignore
+            LICENSE
+            README.md
+            RELEASE.json
+            package.json
+            pnpm-lock.yaml
+            pnpm-workspace.yaml
+            vite.config.mjs
+            drizzle.config.ts
