@@ -1,0 +1,24 @@
+name: Publish standalone libraries
+on:
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: npm test
+      - run: npm run build
+      - run: npm run validate
+      - name: Publish packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          for package in core renderer controls collaboration engineering cabinet interchange; do
+            npm publish ./packages/$package --access public
+          done

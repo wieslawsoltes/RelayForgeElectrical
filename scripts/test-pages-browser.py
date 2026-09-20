@@ -7,7 +7,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import threading
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parent.parent
 RESULTS = ROOT / 'test-results'
@@ -53,7 +53,7 @@ with tempfile.TemporaryDirectory() as directory:
             page.get_by_role('button', name='Close', exact=True).click()
             page.get_by_role('button', name='Project', exact=True).click()
             page.get_by_role('button', name='Revision history', exact=True).click()
-            assert 'Revision 2' in page.locator('#dialog-body').inner_text()
+            expect(page.locator('#dialog-body')).to_contain_text('Revision 2', timeout=10000)
             page.get_by_role('button', name='Close', exact=True).click()
             page.get_by_role('button', name='Reports', exact=True).click()
             with page.expect_download() as download:
