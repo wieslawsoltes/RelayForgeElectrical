@@ -1,0 +1,15 @@
+name: Check original source availability
+on:
+  push:
+    paths: ['.github/workflows/check-source.yml']
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check anonymous read of the original source repository
+        env:
+          GIT_TERMINAL_PROMPT: '0'
+        run: |
+          git -c credential.helper= -c credential.interactive=false ls-remote 'https://git.chatgpt-team.site/68d42725-37d6-4128-a78b-83c4c7ae6c20/appgprj_6aa85adf10f08191b3a9d4f7918450cc.git' HEAD
