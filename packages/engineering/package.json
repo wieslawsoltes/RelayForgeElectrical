@@ -1,0 +1,21 @@
+{
+  "name": "@relayforge/engineering",
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "*.js",
+    "*.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "version": "0.2.0",
+  "exports": {
+    ".": "./index.js",
+    "./properties": "./properties.js",
+    "./networks": "./networks.js"
+  },
+  "dependencies": {
+    "@relayforge/core": "0.2.0"
+  }
+}

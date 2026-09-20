@@ -1,0 +1,1 @@
+body{font:14px system-ui;background:#e8edf3;color:#21354b;margin:28px}header{display:flex;justify-content:space-between;font-size:22px}p{max-width:900px;line-height:1.6}button{padding:10px 20px;margin:8px 8px 20px 0}#schematic{position:relative;height:420px;background:white}#cabinet{height:450px;margin-top:20px}pre{white-space:pre-wrap;background:#fff;padding:20px}

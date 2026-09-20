@@ -1,0 +1,107 @@
+name: GitHub Pages
+on:
+  push:
+    branches: [main, codex/relayforge-pages-0.2.1]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Build server and generated worker
+        run: npm run build
+      - run: npm test
+      - run: npm run verify:source
+      - run: npm run validate
+      - run: npm run build:pages
+      - run: npm run pack:libs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install browser test dependencies
+        run: |
+          python -m pip install playwright==1.57.0
+          python -m playwright install --with-deps chromium
+      - name: Test browser-local Pages edition
+        run: python scripts/test-pages-browser.py
+      - name: Save browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-evidence
+          path: test-results/
+          if-no-files-found: warn
+      - name: Archive complete tracked source
+        run: git archive --format=zip --prefix=RelayForgeElectrical/ -o RelayForgeElectrical-source.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: relayforge-distribution
+          path: |
+            RelayForgeElectrical-source.zip
+            dist/
+            dist-pages/
+            artifacts/
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist-pages
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Verify published source revision and assets
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        shell: python
+        run: |
+          import json, os, time, urllib.request
+          base = os.environ['PAGES_URL'].rstrip('/') + '/'
+          commit = os.environ['GITHUB_SHA']
+          def read(path):
+              request = urllib.request.Request(base + path, headers={'User-Agent': 'RelayForge-Pages-verification'})
+              with urllib.request.urlopen(request, timeout=15) as response:
+                  return response.read().decode('utf-8')
+          for attempt in range(20):
+              try:
+                  info = json.loads(read('build-info.json?commit=' + commit))
+                  assert info['sourceCommit'] == commit, info
+                  assert info['storage'] == 'browser-local', info
+                  assert 'relayforge-storage' in read('')
+                  assert 'createCollaborationClient' in read('app/main.js')
+                  assert 'indexedDB' in read('app/browser-storage.js')
+                  assert 'SchematicRenderer' in read('packages/renderer/index.js')
+                  break
+              except Exception as error:
+                  if attempt == 19:
+                      raise
+                  print('Waiting for Pages propagation:', error)
+                  time.sleep(3)
+          print('Verified live Pages deployment:', base, commit)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('Published and HTTP-verified: ' + base + '\n\nSource commit: `' + commit + '`\n')

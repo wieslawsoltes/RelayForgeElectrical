@@ -1,0 +1,2 @@
+import {mkdirSync} from 'node:fs';import {spawnSync} from 'node:child_process';import path from 'node:path';
+const dest=path.resolve('artifacts');mkdirSync(dest,{recursive:true});for(const name of ['core','renderer','controls','collaboration','engineering','cabinet','interchange']){const r=spawnSync('npm',['pack','--ignore-scripts','--pack-destination',dest],{cwd:path.resolve('packages',name),stdio:'inherit'});if(r.status)process.exit(r.status);}

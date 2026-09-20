@@ -1,0 +1,11 @@
+{
+  "version": "0.2.1",
+  "standalonePackages": 7,
+  "testsPassed": 56,
+  "sourceLicense": "MIT",
+  "originalSourceCommit": "6a497a7b9ecff6e7ffdf292d6b7fe516d8d22511",
+  "browserValidation": "12 Chromium workflow checks passed in GitHub Actions run 35543366457",
+  "pagesStorage": "IndexedDB, same-browser tabs only",
+  "browser": "Chromium 143.0.7499.4",
+  "physicalGPUQualified": false
+}

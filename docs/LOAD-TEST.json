@@ -1,0 +1,13 @@
+{
+  "environment": "Node v24.19.0 / local SQLite WAL, one process; not distributed or network load",
+  "clients": 32,
+  "operations": 640,
+  "finalRevision": 641,
+  "lostUpdates": 0,
+  "retryableBusyResponses": 0,
+  "durationMS": 1153,
+  "operationsPerSecond": 555,
+  "latencyP50MS": 51.36,
+  "latencyP95MS": 81.22,
+  "latencyP99MS": 90.14
+}
