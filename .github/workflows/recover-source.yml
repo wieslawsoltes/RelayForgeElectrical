@@ -1,0 +1,63 @@
+name: Recover source archive
+on:
+  push:
+    paths: ['.recovery/manifest.json']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  recover:
+    if: startsWith(github.ref_name, 'codex/relayforge-pages-')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Restore checksum-verified archive
+        shell: python
+        run: |
+          import hashlib, io, json, pathlib, tarfile
+          root = pathlib.Path.cwd()
+          manifest = json.loads((root / '.recovery/manifest.json').read_text())
+          chunks = []
+          for part in manifest['parts']:
+              name = pathlib.PurePosixPath(part['path'])
+              assert name.parts[0] == '.recovery' and '..' not in name.parts and not name.is_absolute()
+              payload = (root / name).read_bytes()
+              assert hashlib.sha256(payload).hexdigest() == part['sha256'], str(name)
+              chunks.append(payload)
+          payload = b''.join(chunks)
+          assert hashlib.sha256(payload).hexdigest() == manifest['sha256']
+          with tarfile.open(fileobj=io.BytesIO(payload), mode='r:xz') as archive:
+              for member in archive:
+                  name = pathlib.PurePosixPath(member.name)
+                  assert not name.is_absolute() and '..' not in name.parts
+                  assert name.parts[0] not in ('.git', '.github', '.recovery')
+                  assert member.isfile() and member.size <= 2000000
+                  target = root / name
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(archive.extractfile(member).read())
+          print('Recovered source archive:', manifest['sha256'])
+      - run: npm test
+      - run: npm run verify:source
+      - run: npm run build
+      - run: npm run validate
+      - run: npm run build:pages
+      - run: npm run pack:libs
+      - name: Commit recovered source
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add app packages server scripts tests bridge docs examples drizzle db .openai .gitignore LICENSE README.md RELEASE.json package.json pnpm-lock.yaml pnpm-workspace.yaml vite.config.mjs drizzle.config.ts
+          git diff --cached --quiet || git commit -m 'feat: restore RelayForge 0.2.0 and add browser-local Pages build'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recovered-distribution
+          path: |
+            dist/
+            dist-pages/
+            artifacts/
