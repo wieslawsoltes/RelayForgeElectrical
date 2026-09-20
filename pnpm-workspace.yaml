@@ -1,0 +1,21 @@
+allowBuilds:
+  esbuild: true
+overrides:
+  tsx: 4.22.1
+  'tsx>esbuild': 0.28.0
+  get-tsconfig: 4.14.0
+  'postcss': 8.5.23
+  'picocolors': 1.1.1
+  'nanoid': 3.3.18
+  'source-map-js': 1.2.1
+  'rolldown': 1.0.1
+  '@rolldown/pluginutils': 1.0.1
+  'picomatch': 4.0.4
+  'detect-libc': 2.1.2
+  'lightningcss': 1.31.1
+  '@oxc-project/types': 0.130.0
+  '@emnapi/core': 1.10.0
+  '@emnapi/runtime': 1.10.0
+  '@emnapi/wasi-threads': 1.2.1
+  'napi-postinstall': 0.3.4
+  tinyglobby: 0.2.16

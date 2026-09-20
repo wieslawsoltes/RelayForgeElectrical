@@ -1,0 +1,22 @@
+{
+  "name": "@relayforge/collaboration",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./live": "./live.js",
+    "./operations": "./operations.js",
+    "./legacy": "./legacy.js"
+  },
+  "files": [
+    "*.js",
+    "*.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@relayforge/core": "0.2.0"
+  },
+  "license": "MIT"
+}

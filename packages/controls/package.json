@@ -1,0 +1,20 @@
+{
+  "name": "@relayforge/controls",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./styles.css": "./styles.css"
+  },
+  "files": [
+    "*.js",
+    "*.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@relayforge/core": "0.2.0"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@relayforge/interchange",
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "*.js",
+    "*.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "version": "0.2.0",
+  "exports": {
+    ".": "./index.js",
+    "./xml": "./xml.js"
+  },
+  "dependencies": {
+    "@relayforge/core": "0.2.0"
+  }
+}

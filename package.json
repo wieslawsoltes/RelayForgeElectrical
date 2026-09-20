@@ -1,0 +1,26 @@
+{
+  "name": "relayforge-electrical",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bash scripts/build.sh",
+    "validate": "node scripts/validate-artifact.mjs",
+    "start": "node scripts/bundle.mjs && node server/local.mjs",
+    "test": "node --test tests/*.test.js",
+    "db:generate": "drizzle-kit generate",
+    "pack:libs": "node scripts/pack-libraries.mjs",
+    "dev": "vite",
+    "test:load": "node scripts/load-test.mjs",
+    "build:pages": "node scripts/build-pages.mjs",
+    "verify:source": "node scripts/verify-source.mjs"
+  },
+  "version": "0.2.1",
+  "license": "MIT",
+  "description": "Modular electrical CAD editor with WebGPU and revisioned collaboration",
+  "packageManager": "pnpm@11.25.0",
+  "devDependencies": {
+    "drizzle-kit": "0.31.10",
+    "drizzle-orm": "0.45.2",
+    "vite": "8.0.13"
+  }
+}

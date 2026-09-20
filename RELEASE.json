@@ -1,0 +1,9 @@
+{
+  "version": "0.2.1",
+  "standalonePackages": 7,
+  "testsPassed": 56,
+  "sourceLicense": "MIT",
+  "originalSourceCommit": "6a497a7b9ecff6e7ffdf292d6b7fe516d8d22511",
+  "browserValidation": "See CI run artifacts; local browser navigation was blocked",
+  "pagesStorage": "IndexedDB, same-browser tabs only"
+}
