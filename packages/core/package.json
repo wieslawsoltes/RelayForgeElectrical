@@ -1,0 +1,18 @@
+{
+  "name": "@relayforge/core",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./symbols": "./symbols.js",
+    "./extended-symbols": "./extended-symbols.js"
+  },
+  "files": [
+    "*.js",
+    "*.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT"
+}
